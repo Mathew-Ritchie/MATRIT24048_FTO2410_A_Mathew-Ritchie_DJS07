@@ -1,16 +1,33 @@
 import React from "react";
-
 import { useState, useEffect } from "react";
 
+/**
+ * Meme component to geterate a meme image from an API and add top and bottom text.
+ * @returns {JSX.Element} - Main section which is the actual meme component
+ */
 export default function Meme() {
+  /**
+   * State for the meme object
+   * @type {object}
+   * @property {string} topText
+   * @property {string} bottomText
+   * @property {string} randomImage
+   */
   const [meme, setMeme] = useState({
     topText: "",
     bottomText: "",
     randommImage: "http://i.imgflip.com/1bij.jpg",
   });
 
+  /**
+   * State for storing all meme data fetch from the API
+   * @type {Array<object>}
+   */
   const [allMemes, setAllMemes] = useState([]);
 
+  /**
+   * UseEffect hook to fetch API data when tyhe component mounts.
+   */
   useEffect(() => {
     async function getMemes() {
       const res = await fetch("https://api.imgflip.com/get_memes");
@@ -22,8 +39,11 @@ export default function Meme() {
     return () => {};
   }, []);
 
-  console.log(allMemes);
+  //console.log(allMemes);
 
+  /**
+   * function to generate a random meme image URL and update the meme state.
+   */
   function getMemeImage() {
     const randomNumber = Math.floor(Math.random() * allMemes.length);
     const url = allMemes[randomNumber].url;
@@ -33,6 +53,10 @@ export default function Meme() {
     }));
   }
 
+  /**
+   * handles input changes
+   * @param {event} event
+   */
   function handleChange(event) {
     const { name, value } = event.target;
     setMeme((prevMeme) => ({
@@ -40,7 +64,10 @@ export default function Meme() {
       [name]: value,
     }));
   }
-
+  /**
+   * renders meme component.
+   * @returns {JSX.Element} The render Meme component.
+   */
   return (
     <main>
       <div className="form">
